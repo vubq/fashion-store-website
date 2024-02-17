@@ -1,32 +1,37 @@
 <template>
   <div class="grid grid-cols-12">
-    <div class="col-span-2 px-5 sticky top-0">
-      <UAside class="!top-0 !max-h-screen">
+    <div class="col-span-2 px-5 h-screen sticky top-0">
+      <div class="mt-5">
+        <img ref="logo" alt="" src="../assets/images/logo.png" />
+      </div>
+
+      <UAside class="!top-0 !py-0 mt-5 aside">
         <template #top>
-          <div>
-            <ULandingLogos>
-              <img alt="" src="https://fdesign.vn/wp-content/uploads/2022/07/logo-vingroup-1.jpg" />
-            </ULandingLogos>
-            <UDocsSearchButton class="w-full"/>
-          </div>
+          <UDocsSearchButton class="w-full"/>
         </template>
+
         <template #links>
           <UNavigationTree :links="linksAside" default-open :multiple="false" />
         </template>
+
         <template #bottom>
           <UDivider type="dashed" class="my-6" />
           <UPageLinks :links="pageLinks" />
         </template>
       </UAside>
     </div>
+
     <div class="col-span-10 border-s border-gray-200 dark:border-gray-800">
       <UHeader>
         <template #logo>
           Logo
         </template>
+
         <template #right>
           <UDocsSearchButton label="" />
+
           <UColorModeButton />
+
           <UDropdown :items="items" :popper="{ arrow: true }">
             <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" />
 
@@ -49,202 +54,93 @@
           </UDropdown>
         </template>
       </UHeader>
-      <UMain class="p-5">
+
+      <UMain class="p-8">
         <slot />
       </UMain>
-      <UFooter :links="links" class="border-t border-gray-200 dark:border-gray-800">
+
+      <UFooter class="border-t border-gray-200 dark:border-gray-800">
         <template #left>
           Copyright © {{ new Date().getFullYear() }}
-        </template>
-
-        <template #right>
-          <UButton icon="i-simple-icons-x" color="gray" variant="ghost" to="https://x.com/nuxt_js" target="_blank" />
-          <UButton icon="i-simple-icons-discord" color="gray" variant="ghost" to="https://discord.com/invite/ps2h6QT" target="_blank" />
-          <UButton icon="i-simple-icons-github" color="gray" variant="ghost" to="https://github.com/nuxt/nuxt" target="_blank" />
         </template>
       </UFooter>
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-
-const links = [{
-  label: 'Docs',
-  icon: 'i-heroicons-book-open',
-  to: '/getting-started'
-}, {
-  label: 'Pro',
-  icon: 'i-heroicons-square-3-stack-3d',
-  to: '/pro'
-}, {
-  label: 'Releases',
-  icon: 'i-heroicons-rocket-launch',
-  to: '/releases'
-}]
-
-const linksAside = [{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products'
-},{
-  label: 'Sản phẩm',
-  icon: 'i-heroicons-clipboard-document-list',
-  to: '/admins/products',
-  children: [
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
+<script>
+export default {
+  mounted() {
+    this.logoHeight = this.$refs['logo'].clientHeight + 'px'
+  },
+  data() {
+    return {
+      logoHeight: 0,
+      linksAside: [{
+        label: 'Quản lý sản phẩm',
+        icon: 'i-heroicons-clipboard-document-list',
+        to: '',
+        children: [{
+          label: 'Sản phẩm',
+          icon: 'i-heroicons-clipboard-document-list',
+          to: '/admins/products'
+        }, {
+          label: 'Danh mục',
+          icon: 'i-heroicons-clipboard-document-list',
+          to: '/admins/categories'
+        }]
+      }, {
+        label: 'Quản lý vật tư',
+        icon: 'i-heroicons-clipboard-document-list',
+        to: '',
+        children: [{
+          label: 'Test',
+          icon: 'i-heroicons-clipboard-document-list',
+          to: '/'
+        }]
+      }],
+      pageLinks: [{
+        icon: 'i-heroicons-heart',
+        label: 'Learn how to contribute',
+        to: '/',
+        target: '_blank'
+      }],
+      items: [
+        [{
+          label: 'ben@example.com',
+          slot: 'account',
+          disabled: true
+        }], [{
+          label: 'Settings',
+          icon: 'i-heroicons-cog-8-tooth'
+        }], [{
+          label: 'Documentation',
+          icon: 'i-heroicons-book-open'
+        }, {
+          label: 'Changelog',
+          icon: 'i-heroicons-megaphone'
+        }, {
+          label: 'Status',
+          icon: 'i-heroicons-signal'
+        }], [{
+          label: 'Sign out',
+          icon: 'i-heroicons-arrow-left-on-rectangle'
+        }]
+      ]
     }
-    ,{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },
-    {
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    },{
-      label: 'Sản phẩm',
-      icon: 'i-heroicons-clipboard-document-list',
-      to: '/admins/products'
-    }
-  ]
-}]
+  }
 
-const pageLinks = [{
-  icon: 'i-heroicons-heart',
-  label: 'Learn how to contribute',
-  to: '/getting-started/contributing',
-  target: '_blank'
-}]
-
-const items = [
-  [{
-    label: 'ben@example.com',
-    slot: 'account',
-    disabled: true
-  }], [{
-    label: 'Settings',
-    icon: 'i-heroicons-cog-8-tooth'
-  }], [{
-    label: 'Documentation',
-    icon: 'i-heroicons-book-open'
-  }, {
-    label: 'Changelog',
-    icon: 'i-heroicons-megaphone'
-  }, {
-    label: 'Status',
-    icon: 'i-heroicons-signal'
-  }], [{
-    label: 'Sign out',
-    icon: 'i-heroicons-arrow-left-on-rectangle'
-  }]
-]
+}
 </script>
+
+<style type="text/css">
+header div:first-child {
+  max-width: 100% !important;
+}
+footer div:first-child div:first-child {
+  max-width: 100% !important;
+}
+.aside {
+  height: calc(100vh - v-bind(logoHeight) - 3.75rem) !important;
+}
+</style>

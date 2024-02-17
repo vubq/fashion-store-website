@@ -6,7 +6,6 @@
 definePageMeta({
   layout: 'cms'
 })
-
 const { options } = useRouter();
 console.log(options)
 </script>
