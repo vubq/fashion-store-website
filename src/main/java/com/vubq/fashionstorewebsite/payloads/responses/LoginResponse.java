@@ -14,5 +14,5 @@ public class LoginResponse {
 
     private String token;
     private String type = "Bearer";
-    private User user;
+    private LoginUserResponse user;
 }

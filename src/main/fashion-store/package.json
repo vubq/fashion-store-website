@@ -10,16 +10,27 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@pinia/nuxt": "^0.5.1",
     "autoprefixer": "^10.4.17",
-    "nuxt": "^3.10.0",
+    "nuxt": "^3.10.3",
+    "pinia": "^2.1.7",
     "postcss": "^8.4.33",
     "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
     "vue": "^3.4.15",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-tsc": "^1.8.27"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/vue-fontawesome": "^3.0.6",
     "@nuxt/content": "^2.11.0",
-    "@nuxt/ui": "^2.13.0",
-    "@nuxt/ui-pro": "^0.7.4"
+    "@nuxt/ui": "^2.14.2",
+    "@nuxt/ui-pro": "^1.0.1",
+    "axios": "^1.6.7",
+    "destr": "^2.0.3",
+    "moment": "^2.30.1",
+    "v-calendar": "^3.1.2"
   }
 }

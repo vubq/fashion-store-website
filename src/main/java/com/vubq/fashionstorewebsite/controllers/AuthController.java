@@ -8,9 +8,10 @@ import com.vubq.fashionstorewebsite.enums.ERole;
 import com.vubq.fashionstorewebsite.payloads.requests.SignInRequest;
 import com.vubq.fashionstorewebsite.payloads.requests.SignUpRequest;
 import com.vubq.fashionstorewebsite.payloads.responses.LoginResponse;
+import com.vubq.fashionstorewebsite.payloads.responses.LoginUserResponse;
 import com.vubq.fashionstorewebsite.services.RoleService;
 import com.vubq.fashionstorewebsite.services.UserService;
-import com.vubq.fashionstorewebsite.utils.Response;
+import com.vubq.fashionstorewebsite.payloads.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -65,7 +66,13 @@ public class AuthController {
                 .data(LoginResponse.builder()
                         .token(jwt)
                         .type("Bearer")
-                        .user(user)
+                        .user(LoginUserResponse.builder()
+                                .id(user.getId())
+                                .firstName(user.getFirstName())
+                                .lastName(user.getLastName())
+                                .avatar(user.getAvatar())
+                                .roles(roles)
+                                .build())
                         .build());
     }
 

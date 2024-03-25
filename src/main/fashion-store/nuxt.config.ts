@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-  modules: [
-    '@nuxt/content',
-    '@nuxt/ui'
-  ],
+  devtools: {enabled: true},
+  modules: ['@nuxt/content', '@nuxt/ui', '@pinia/nuxt'],
   extends: ['@nuxt/ui-pro'],
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '@fortawesome/fontawesome-svg-core/styles.css'
+  ],
   postcss: {
     plugins: {
       'postcss-import': {},
@@ -15,4 +16,7 @@ export default defineNuxtConfig({
       autoprefixer: {},
     },
   },
+  typescript: {
+    typeCheck: true
+  }
 })

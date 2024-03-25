@@ -4,7 +4,8 @@
 
 <script setup>
 definePageMeta({
-  layout: 'cms'
+  layout: 'cms',
+  isAdmin: false
 })
 const { options } = useRouter();
 console.log(options)

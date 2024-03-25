@@ -4,6 +4,7 @@
 
 <script setup>
 definePageMeta({
-  layout: 'cms'
+  layout: 'cms',
+  isAdmin: true
 })
 </script>

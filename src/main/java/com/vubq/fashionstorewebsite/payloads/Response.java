@@ -1,4 +1,4 @@
-package com.vubq.fashionstorewebsite.utils;
+package com.vubq.fashionstorewebsite.payloads;
 
 import lombok.Getter;
 
