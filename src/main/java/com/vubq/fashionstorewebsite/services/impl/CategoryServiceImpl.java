@@ -2,6 +2,7 @@ package com.vubq.fashionstorewebsite.services.impl;
 
 import com.vubq.fashionstorewebsite.entities.BaseEntity;
 import com.vubq.fashionstorewebsite.entities.Category;
+import com.vubq.fashionstorewebsite.enums.EStatus;
 import com.vubq.fashionstorewebsite.payloads.DataTableRequest;
 import com.vubq.fashionstorewebsite.repositories.CategoryRepository;
 import com.vubq.fashionstorewebsite.services.CategoryService;
@@ -30,7 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<Category> getAll(DataTableRequest request, String status) {
+    public Page<Category> getAll(DataTableRequest request, List<EStatus> statusList) {
         PageRequest pageable = request.toPageable();
         BaseSpecification<Category> specNameContains = new BaseSpecification<>(
                 SearchCriteria.builder()
@@ -41,8 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
         BaseSpecification<Category> specStatusEquality = new BaseSpecification<>(
                 SearchCriteria.builder()
                         .keys(new String[]{BaseEntity.Fields.status})
-                        .operation(SearchOperation.EQUALITY)
-                        .value(status)
+                        .operation(SearchOperation.IN)
+                        .listValue(statusList)
                         .build());
         return this.categoryRepository.findAll(Specification.where(specNameContains).and(specStatusEquality), pageable);
     }

@@ -1,6 +1,7 @@
-import {useAuthStore} from '#imports'
+import {useAuthStore, useSystemStore} from '#imports'
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  // useSystemStore().setIsLoading(true)
   const isAdmin = to.meta.isAdmin ? to.meta.isAdmin : false
   if (isAdmin) {
     const {isSignIn} = useAuthStore()
@@ -8,4 +9,5 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       navigateTo('/admins/sign-in', {external: true})
     }
   }
+  // useSystemStore().setIsLoading(false)
 })

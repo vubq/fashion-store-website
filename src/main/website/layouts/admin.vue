@@ -32,13 +32,12 @@ const links = [{
     shortcuts: ['G', 'U']
   }
 }, {
-  id: 'settings',
-  label: 'Settings',
-  to: '/settings',
+  id: 'manage',
+  label: 'Quản lý',
   icon: 'i-heroicons-cog-8-tooth',
   children: [{
-    label: 'General',
-    to: '/settings',
+    label: 'Danh mục',
+    to: '/admins/manages/categories',
     exact: true
   }, {
     label: 'Members',

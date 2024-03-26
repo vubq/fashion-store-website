@@ -52,8 +52,8 @@ const state = reactive({
 
 const validate = (state: any) => {
   const errors: FormError[] = []
-  if (!state.userName) errors.push({path: 'userName', message: 'Tài khoản không đuợc để trống!'})
-  if (!state.password) errors.push({path: 'password', message: 'Mật khẩu không được để trống!'})
+  if (!state.userName) errors.push({path: 'userName', message: '*Tài khoản không đuợc để trống'})
+  if (!state.password) errors.push({path: 'password', message: '*Mật khẩu không được để trống'})
   return errors
 }
 

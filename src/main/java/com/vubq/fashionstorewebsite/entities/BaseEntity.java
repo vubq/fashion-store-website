@@ -1,5 +1,6 @@
 package com.vubq.fashionstorewebsite.entities;
 
+import com.vubq.fashionstorewebsite.config.security.service.UserDetailsImpl;
 import com.vubq.fashionstorewebsite.enums.EStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -23,7 +25,7 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
 
     @Column(name = "created_by", updatable = false)
-    private Date createdBy;
+    private String createdBy;
 
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
@@ -38,8 +40,8 @@ public class BaseEntity implements Serializable {
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
-        status = EStatus.ACTIVE;
-//        createdBy = SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        createdBy = userDetails != null ? userDetails.getId() : null;
     }
 
     @PreUpdate

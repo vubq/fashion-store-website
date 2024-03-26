@@ -32,7 +32,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div id="app">
+  <div>
     <Loading />
 
     <NuxtLoadingIndicator />
@@ -47,7 +47,7 @@ useSeoMeta({
 </template>
 
 <style type="text/css">
-#app {
+body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
 }
 </style>

@@ -1,6 +1,7 @@
 package com.vubq.fashionstorewebsite.services;
 
 import com.vubq.fashionstorewebsite.entities.Category;
+import com.vubq.fashionstorewebsite.enums.EStatus;
 import com.vubq.fashionstorewebsite.payloads.DataTableRequest;
 import org.springframework.data.domain.Page;
 
@@ -11,7 +12,7 @@ public interface CategoryService {
 
     List<Category> getAll();
 
-    Page<Category> getAll(DataTableRequest request, String status);
+    Page<Category> getAll(DataTableRequest request, List<EStatus> statusList);
 
     Optional<Category> findById(String id);
 
