@@ -1,6 +1,9 @@
 package com.vubq.fashionstorewebsite.repositories;
 
+import com.vubq.fashionstorewebsite.entities.Color;
+import com.vubq.fashionstorewebsite.entities.Material;
 import com.vubq.fashionstorewebsite.entities.ProductDetail;
+import com.vubq.fashionstorewebsite.entities.Size;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,14 +23,14 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, St
     @Query(value = "SELECT pd FROM ProductDetail pd WHERE pd.product.id = :productId")
     List<ProductDetail> findAllByProductId(String productId);
 
-    @Query(value = "SELECT DISTINCT pd.size.id FROM ProductDetail pd WHERE pd.product.id = :productId")
-    List<String> findAllSizeIdByProductId(String productId);
+    @Query(value = "SELECT DISTINCT pd.size FROM ProductDetail pd WHERE pd.product.id = :productId")
+    List<Size> findAllSizeByProductId(String productId);
 
-    @Query(value = "SELECT DISTINCT pd.color.id FROM ProductDetail pd WHERE pd.product.id = :productId")
-    List<String> findAllColorIdByProductId(String productId);
+    @Query(value = "SELECT DISTINCT pd.color FROM ProductDetail pd WHERE pd.product.id = :productId")
+    List<Color> findAllColorByProductId(String productId);
 
-    @Query(value = "SELECT DISTINCT pd.material.id FROM ProductDetail pd WHERE pd.product.id = :productId")
-    List<String> findAllMaterialIdByProductId(String productId);
+    @Query(value = "SELECT DISTINCT pd.material FROM ProductDetail pd WHERE pd.product.id = :productId")
+    List<Material> findAllMaterialByProductId(String productId);
 
     @Query(value = "SELECT pd FROM ProductDetail pd WHERE pd.quantity > 0")
     List<ProductDetail> getAllProductDetailInOfStock();

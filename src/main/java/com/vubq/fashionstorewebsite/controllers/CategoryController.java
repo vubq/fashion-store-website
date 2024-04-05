@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,33 +28,16 @@ public class CategoryController {
     @Autowired
     private UserService userService;
 
-    @GetMapping
-    public List<Category> getAll() {
-        return this.categoryService.getAll();
-    }
-
     @GetMapping("/{id}")
     public Response getById(@PathVariable String id) {
         return Response.build().ok().data(CategoryDto.toDto(this.categoryService.findById(id).get()));
     }
 
     @PostMapping()
-    public Response create(@RequestBody CategoryDto categoryDto) {
+    public Response createOrUpdate(@RequestBody CategoryDto categoryDto) {
         Category category = this.categoryService.save(Category.toEntity(categoryDto));
-        return Response.build().ok().data(category);
+        return Response.build().ok().data(CategoryDto.toDto(category));
     }
-
-//    @PutMapping()
-//    public Response update(@RequestBody CategoryDTO categoryDTO) {
-//        Category category = this.categoryService.save(Category.builder()
-//                .id(categoryDTO.getId())
-//                .name(categoryDTO.getName())
-//                .description(categoryDTO.getDescription())
-//                .createdAt(categoryDTO.getCreatedAt())
-//                .status(categoryDTO.getStatus())
-//                .build());
-//        return Response.build().ok().data(category);
-//    }
 
     @PostMapping("/get-all")
     public DataTableResponse getAll(DataTableRequest request, @RequestBody List<EStatus> statusList) {

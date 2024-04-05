@@ -60,4 +60,19 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         };
         return this.productDetailRepository.findAll(specification, pageable);
     }
+
+    @Override
+    public List<Size> findAllSizeByProductId(String productId) {
+        return this.productDetailRepository.findAllSizeByProductId(productId);
+    }
+
+    @Override
+    public List<Color> findAllColorByProductId(String productId) {
+        return this.productDetailRepository.findAllColorByProductId(productId);
+    }
+
+    @Override
+    public List<Material> findAllMaterialByProductId(String productId) {
+        return this.productDetailRepository.findAllMaterialByProductId(productId);
+    }
 }
