@@ -1,5 +1,6 @@
 package com.vubq.fashionstorewebsite.entities;
 
+import com.vubq.fashionstorewebsite.dtos.CategoryDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -32,4 +33,16 @@ public class Category extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    public static Category toEntity(CategoryDto categoryDto) {
+        return Category.builder()
+                .id(categoryDto.getId())
+                .name(categoryDto.getName())
+                .description(categoryDto.getDescription())
+                .createdBy(categoryDto.getCreatedBy().getId())
+                .createdAt(categoryDto.getCreatedAt())
+                .status(categoryDto.getStatus())
+                .updatedAt(categoryDto.getUpdatedAt())
+                .build();
+    }
 }

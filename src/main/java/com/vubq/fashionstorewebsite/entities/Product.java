@@ -9,6 +9,8 @@ import lombok.experimental.FieldNameConstants;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -32,6 +34,9 @@ public class Product extends BaseEntity {
 
     @Column(name = "price")
     private Double price;
+
+    @Column(name = "code")
+    private String code;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "category_id", nullable = false)

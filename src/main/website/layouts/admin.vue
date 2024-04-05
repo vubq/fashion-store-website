@@ -36,6 +36,10 @@ const links = [{
   label: 'Quản lý',
   icon: 'i-heroicons-cog-8-tooth',
   children: [{
+    label: 'Sản phẩm',
+    to: '/admins/manages/products',
+    exact: true
+  }, {
     label: 'Danh mục',
     to: '/admins/manages/categories',
     exact: true
@@ -81,6 +85,8 @@ const groups = [{
 
 const defaultColors = ref(['green', 'teal', 'cyan', 'sky', 'blue', 'indigo', 'violet'].map(color => ({ label: color, chip: color, click: () => appConfig.ui.primary = color })))
 const colors = computed(() => defaultColors.value.map(color => ({ ...color, active: appConfig.ui.primary === color.label })))
+
+appConfig.ui.primary = 'cyan'
 </script>
 
 <template>
@@ -99,9 +105,9 @@ const colors = computed(() => defaultColors.value.map(color => ({ ...color, acti
 
         <UDashboardSidebarLinks :links="links" />
 
-        <UDivider />
+<!--        <UDivider />-->
 
-        <UDashboardSidebarLinks :links="[{ label: 'Colors', draggable: true, children: colors }]" @update:links="colors => defaultColors = colors" />
+<!--        <UDashboardSidebarLinks :links="[{ label: 'Colors', draggable: true, children: colors }]" @update:links="colors => defaultColors = colors" />-->
 
         <div class="flex-1" />
 

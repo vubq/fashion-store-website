@@ -34,19 +34,14 @@ public class CategoryController {
         return this.categoryService.getAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public Response getById(@PathVariable String id) {
-        return Response.build().ok().data(this.categoryService.findById(id));
+        return Response.build().ok().data(CategoryDto.toDto(this.categoryService.findById(id).get()));
     }
 
     @PostMapping()
     public Response create(@RequestBody CategoryDto categoryDto) {
-        Category category = this.categoryService.save(Category.builder()
-                .name(categoryDto.getName())
-                .description(categoryDto.getDescription())
-                .status(categoryDto.getStatus())
-//                .createdBy(categoryDto.getCreatedBy().getId())
-                .build());
+        Category category = this.categoryService.save(Category.toEntity(categoryDto));
         return Response.build().ok().data(category);
     }
 

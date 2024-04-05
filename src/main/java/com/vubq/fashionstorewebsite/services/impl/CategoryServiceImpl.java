@@ -39,13 +39,13 @@ public class CategoryServiceImpl implements CategoryService {
                         .operation(SearchOperation.CONTAINS)
                         .value(StringUtils.isEmpty(request.getFilter()) ? "" : request.getFilter().trim().toUpperCase())
                         .build());
-        BaseSpecification<Category> specStatusEquality = new BaseSpecification<>(
+        BaseSpecification<Category> specStatusIn = new BaseSpecification<>(
                 SearchCriteria.builder()
                         .keys(new String[]{BaseEntity.Fields.status})
                         .operation(SearchOperation.IN)
                         .listValue(statusList)
                         .build());
-        return this.categoryRepository.findAll(Specification.where(specNameContains).and(specStatusEquality), pageable);
+        return this.categoryRepository.findAll(Specification.where(specNameContains).and(specStatusIn), pageable);
     }
 
     @Override

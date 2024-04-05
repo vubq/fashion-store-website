@@ -33,7 +33,7 @@ public class DataTableResponse {
         return this;
     }
 
-    private List<?> items;
+    private Object items;
 
     private Long totalRows;
 
@@ -41,7 +41,7 @@ public class DataTableResponse {
         return new DataTableResponse();
     }
 
-    public DataTableResponse items(List<?> items) {
+    public DataTableResponse items(Object items) {
         this.items = items;
         return this;
     }

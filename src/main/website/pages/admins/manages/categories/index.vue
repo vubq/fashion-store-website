@@ -4,7 +4,7 @@ import {Category} from '~/models/Category'
 import {DataTableRequest} from '~/models/DataTableRequest'
 import {Status} from '~/models/enums/Status'
 import {ResponseCode} from '~/models/enums/ResponseCode'
-import {getAllCategory, createOrUpdateCategory} from '~/server/services/category'
+import {createOrUpdateCategory, getAllCategory, getCategoryById} from '~/server/services/category'
 import moment from 'moment'
 import {debounce} from 'perfect-debounce'
 import type {FormError} from '#ui/types'
@@ -54,7 +54,7 @@ const listCategory = ref<Category[]>([])
 const status = ref<Status[]>([])
 const statusList = ref<Status[]>([Status.ACTIVE, Status.IN_ACTIVE])
 const sort = ref({column: 'createdAt', direction: 'desc' as const})
-const state = reactive(new Category)
+let state = reactive(new Category)
 const isModalCreateOrUpdateOpen = ref(false)
 
 function onSelect(row: User) {
@@ -128,8 +128,7 @@ watch(() => dataTableRequest.value.currentPage, () => {
 
 const openModalCreateOrUpdate = () => {
   isModalCreateOrUpdateOpen.value = true
-  state.name = undefined
-  state.description = undefined
+  state = new Category()
   state.status = Status.ACTIVE
 }
 
@@ -138,13 +137,23 @@ const createOrUpdate = () => {
     .then((res: any) => {
       if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
         isModalCreateOrUpdateOpen.value = false
-        reloadDataTable()
+        if(state.id) {
+          getAll()
+        } else {
+          reloadDataTable()
+        }
       }
     })
 }
 
-const showCategoryDetail = (idCategory: string) => {
-
+const showCategoryDetail = (categoryId: string) => {
+  getCategoryById(categoryId)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        state = res.data.data
+        isModalCreateOrUpdateOpen.value = true
+      }
+    })
 }
 </script>
 
@@ -158,7 +167,7 @@ const showCategoryDetail = (idCategory: string) => {
             v-model="dataTableRequest.filter"
             icon="i-heroicons-funnel"
             autocomplete="off"
-            placeholder="Tìm kiếm danh mục..."
+            placeholder="Tìm kiếm Danh mục..."
             class="hidden lg:block"
             @keyup="changeFilter()"
           >
@@ -243,13 +252,12 @@ const showCategoryDetail = (idCategory: string) => {
 
           <div class="flex justify-end gap-3">
             <UButton label="Hủy" color="gray" variant="ghost"/>
-            <UButton type="submit" label="Thêm mới" color="primary"/>
+            <UButton type="submit" :label="state.id ? 'Cập nhật' : 'Thêm mới'" color="primary"/>
           </div>
         </UForm>
       </UDashboardModal>
 
       <UTable
-        v-model="selected"
         v-model:sort="sort"
         :rows="listCategory"
         :columns="columns"

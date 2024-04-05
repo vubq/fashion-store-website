@@ -30,11 +30,14 @@ public class BaseEntity implements Serializable {
     @Column(name = "created_at", updatable = false)
     private Date createdAt;
 
+    @Column(name = "updated_by")
+    private String updatedBy;
+
     @Column(name = "updated_at")
     private Date updatedAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    @Column(name = "status", updatable = false)
     private EStatus status;
 
     @PrePersist
@@ -47,5 +50,7 @@ public class BaseEntity implements Serializable {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Date();
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        updatedBy = userDetails != null ? userDetails.getId() : null;
     }
 }
