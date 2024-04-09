@@ -1,5 +1,6 @@
 package com.vubq.fashionstorewebsite.entities;
 
+import com.vubq.fashionstorewebsite.dtos.MaterialDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -32,4 +33,17 @@ public class Material extends BaseEntity {
 
     @Column(name = "description")
     private String description;
+
+    public static Material toEntity(MaterialDto materialDto) {
+        return Material.builder()
+                .id(materialDto.getId())
+                .name(materialDto.getName())
+                .description(materialDto.getDescription())
+                .createdBy(materialDto.getCreatedBy() != null ? materialDto.getCreatedBy().getId() : null)
+                .updatedBy(materialDto.getUpdatedBy() != null ? materialDto.getUpdatedBy().getId() : null)
+                .createdAt(materialDto.getCreatedAt())
+                .status(materialDto.getStatus())
+                .updatedAt(materialDto.getUpdatedAt())
+                .build();
+    }
 }

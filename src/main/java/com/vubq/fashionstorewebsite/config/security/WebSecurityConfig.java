@@ -63,8 +63,7 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/webapi/auth/**",
                                 "/error/**",
-                                "/test/**",
-                                "/webapi/**"
+                                "/test/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 );

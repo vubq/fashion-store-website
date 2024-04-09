@@ -11,6 +11,7 @@ import com.vubq.fashionstorewebsite.services.SizeService;
 import com.vubq.fashionstorewebsite.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -41,12 +42,20 @@ public class ProductController {
         productDtoList = productDetailResults.get().toList().stream().map(productDetail -> {
             ProductDto productDto = ProductDto.toDto(productDetail.getProduct());
 
-            User user = this.userService.findById(productDetail.getProduct().getCreatedBy()).orElse(null);
+            User userCreated = this.userService.findById(productDetail.getProduct().getCreatedBy()).orElse(null);
             CreatedByDto createdByDto = CreatedByDto.builder()
-                    .id(user != null ? user.getId() : null)
-                    .name(user != null ? user.getFirstName() + " " + user.getLastName() : null)
+                    .id(userCreated != null ? userCreated.getId() : null)
+                    .name(userCreated != null ? userCreated.getFirstName() + " " + userCreated.getLastName() : null)
                     .build();
             productDto.setCreatedBy(createdByDto);
+            if(!StringUtils.isEmpty(productDetail.getProduct().getUpdatedBy())) {
+                User userUpdated = this.userService.findById(productDetail.getProduct().getUpdatedBy()).orElse(null);
+                UpdatedByDto updatedByDto = UpdatedByDto.builder()
+                        .id(userUpdated != null ? userUpdated.getId() : null)
+                        .name(userUpdated != null ? userUpdated.getFirstName() + " " + userUpdated.getLastName() : null)
+                        .build();
+                productDto.setUpdatedBy(updatedByDto);
+            }
 
             productDto.setSizes(this.productDetailService.findAllSizeByProductId(productDetail.getProduct().getId()).stream().map(SizeDto::toDto).collect(Collectors.toList()));
             productDto.setColors(this.productDetailService.findAllColorByProductId(productDetail.getProduct().getId()).stream().map(ColorDto::toDto).collect(Collectors.toList()));

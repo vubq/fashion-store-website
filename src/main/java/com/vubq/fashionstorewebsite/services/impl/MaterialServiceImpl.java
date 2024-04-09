@@ -57,4 +57,15 @@ public class MaterialServiceImpl implements MaterialService {
     public Material save(Material material) {
         return this.materialRepository.save(material);
     }
+
+    @Override
+    public List<Material> getAllByStatus(EStatus status) {
+        BaseSpecification<Material> specStatusIn = new BaseSpecification<>(
+                SearchCriteria.builder()
+                        .keys(new String[]{BaseEntity.Fields.status})
+                        .operation(SearchOperation.EQUALITY)
+                        .value(status)
+                        .build());
+        return this.materialRepository.findAll(Specification.where(specStatusIn));
+    }
 }

@@ -17,5 +17,7 @@ public interface CategoryService {
     Optional<Category> findById(String id);
 
     Category save(Category category);
+
+    List<Category> getAllByStatus(EStatus status);
 }
 

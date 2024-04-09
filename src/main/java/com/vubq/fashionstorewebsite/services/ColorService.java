@@ -17,4 +17,6 @@ public interface ColorService {
     Optional<Color> findById(String id);
 
     Color save(Color color);
+
+    List<Color> getAllByStatus(EStatus status);
 }

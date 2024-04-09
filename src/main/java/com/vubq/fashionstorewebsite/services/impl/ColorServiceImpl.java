@@ -57,4 +57,15 @@ public class ColorServiceImpl implements ColorService {
     public Color save(Color color) {
         return this.colorRepository.save(color);
     }
+
+    @Override
+    public List<Color> getAllByStatus(EStatus status) {
+        BaseSpecification<Color> specStatusIn = new BaseSpecification<>(
+                SearchCriteria.builder()
+                        .keys(new String[]{BaseEntity.Fields.status})
+                        .operation(SearchOperation.EQUALITY)
+                        .value(status)
+                        .build());
+        return this.colorRepository.findAll(Specification.where(specStatusIn));
+    }
 }

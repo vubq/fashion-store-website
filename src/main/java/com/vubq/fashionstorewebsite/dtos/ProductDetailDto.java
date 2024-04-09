@@ -7,6 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
@@ -22,6 +24,9 @@ public class ProductDetailDto extends BaseDto {
     private SizeDto size;
     private ColorDto color;
     private MaterialDto material;
+    private List<ImageDto> images;
+    private String createdBy;
+    private String updatedBy;
 
     public static ProductDetailDto toDto(ProductDetail productDetail) {
         return ProductDetailDto.builder()
@@ -33,6 +38,10 @@ public class ProductDetailDto extends BaseDto {
                 .size(SizeDto.toDto(productDetail.getSize()))
                 .color(ColorDto.toDto(productDetail.getColor()))
                 .material(MaterialDto.toDto(productDetail.getMaterial()))
+                .createdAt(productDetail.getCreatedAt())
+                .createdBy(productDetail.getCreatedBy())
+                .updatedAt(productDetail.getUpdatedAt())
+                .updatedBy(productDetail.getUpdatedBy())
                 .build();
     }
 }

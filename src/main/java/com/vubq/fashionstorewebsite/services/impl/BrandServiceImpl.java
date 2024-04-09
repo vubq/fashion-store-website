@@ -57,4 +57,15 @@ public class BrandServiceImpl implements BrandService {
     public Brand save(Brand brand) {
         return this.brandRepository.save(brand);
     }
+
+    @Override
+    public List<Brand> getAllByStatus(EStatus status) {
+        BaseSpecification<Brand> specStatusIn = new BaseSpecification<>(
+                SearchCriteria.builder()
+                        .keys(new String[]{BaseEntity.Fields.status})
+                        .operation(SearchOperation.EQUALITY)
+                        .value(status)
+                        .build());
+        return this.brandRepository.findAll(Specification.where(specStatusIn));
+    }
 }

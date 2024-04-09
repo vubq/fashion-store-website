@@ -17,4 +17,6 @@ public interface SizeService {
     Optional<Size> findById(String id);
 
     Size save(Size size);
+
+    List<Size> getAllByStatus(EStatus status);
 }

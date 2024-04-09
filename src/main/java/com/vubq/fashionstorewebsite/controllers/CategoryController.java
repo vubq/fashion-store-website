@@ -2,6 +2,7 @@ package com.vubq.fashionstorewebsite.controllers;
 
 import com.vubq.fashionstorewebsite.dtos.CategoryDto;
 import com.vubq.fashionstorewebsite.dtos.CreatedByDto;
+import com.vubq.fashionstorewebsite.dtos.UpdatedByDto;
 import com.vubq.fashionstorewebsite.entities.Category;
 import com.vubq.fashionstorewebsite.entities.User;
 import com.vubq.fashionstorewebsite.enums.EStatus;
@@ -12,6 +13,7 @@ import com.vubq.fashionstorewebsite.services.CategoryService;
 import com.vubq.fashionstorewebsite.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,13 +49,28 @@ public class CategoryController {
                 .totalRows(result.getTotalElements())
                 .items(result.get().toList().stream().map(category -> {
                     CategoryDto categoryDto = CategoryDto.toDto(category);
-                    User user = this.userService.findById(category.getCreatedBy()).orElse(null);
+                    User userCreated = this.userService.findById(category.getCreatedBy()).orElse(null);
                     CreatedByDto createdByDto = CreatedByDto.builder()
-                            .id(user != null ? user.getId() : null)
-                            .name(user != null ? user.getFirstName() + " " + user.getLastName() : null)
+                            .id(userCreated != null ? userCreated.getId() : null)
+                            .name(userCreated != null ? userCreated.getFirstName() + " " + userCreated.getLastName() : null)
                             .build();
                     categoryDto.setCreatedBy(createdByDto);
+                    if (!StringUtils.isEmpty(category.getUpdatedBy())) {
+                        User userUpdated = this.userService.findById(category.getUpdatedBy()).orElse(null);
+                        UpdatedByDto updatedByDto = UpdatedByDto.builder()
+                                .id(userUpdated != null ? userUpdated.getId() : null)
+                                .name(userUpdated != null ? userUpdated.getFirstName() + " " + userUpdated.getLastName() : null)
+                                .build();
+                        categoryDto.setUpdatedBy(updatedByDto);
+                    }
                     return categoryDto;
                 }).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/get-all/{status}")
+    public Response getAllByStatus(@PathVariable(value = "status") EStatus status) {
+        return Response.build()
+                .ok()
+                .data(this.categoryService.getAllByStatus(status).stream().map(CategoryDto::toDto).collect(Collectors.toList()));
     }
 }

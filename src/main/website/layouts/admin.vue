@@ -44,6 +44,22 @@ const links = [{
     to: '/admins/manages/categories',
     exact: true
   }, {
+    label: 'Thương hiệu',
+    to: '/admins/manages/brands',
+    exact: true
+  }, {
+    label: 'Kích cỡ',
+    to: '/admins/manages/sizes',
+    exact: true
+  }, {
+    label: 'Màu sắc',
+    to: '/admins/manages/colors',
+    exact: true
+  }, {
+    label: 'Chất liệu',
+    to: '/admins/manages/materials',
+    exact: true
+  }, {
     label: 'Members',
     to: '/settings/members'
   }, {

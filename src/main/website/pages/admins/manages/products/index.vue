@@ -1,13 +1,23 @@
 <script lang="ts" setup>
-import type {User} from '~/types'
-import {Category} from '~/models/Category'
 import {DataTableRequest} from '~/models/DataTableRequest'
 import {Status} from '~/models/enums/Status'
 import {ResponseCode} from '~/models/enums/ResponseCode'
-import {createOrUpdateCategory, getAllCategory, getCategoryById} from '~/server/services/category'
+import {getAllProduct} from '~/server/services/product'
 import moment from 'moment'
 import {debounce} from 'perfect-debounce'
 import type {FormError} from '#ui/types'
+import {Product} from '~/models/Product'
+import {ProductFilterModel} from '~/models/ProductFilterModel'
+import {Size} from '~/models/Size'
+import {Color} from '~/models/Color'
+import {Material} from '~/models/Material'
+import {Category} from '~/models/Category'
+import {Brand} from '~/models/Brand'
+import {getAllCategoryByStatus} from '~/server/services/category'
+import {getAllBrandByStatus} from '~/server/services/brand'
+import {getAllSizeByStatus} from '~/server/services/size'
+import {getAllColorByStatus} from '~/server/services/color'
+import {getAllMaterialByStatus} from '~/server/services/material'
 
 definePageMeta({
   layout: 'admin',
@@ -26,45 +36,67 @@ const defaultColumns = [{
   label: 'STT'
 }, {
   key: 'name',
-  label: 'Tên',
+  label: 'Tên sản phẩm',
   sortable: true
 }, {
   key: 'description',
   label: 'Mô tả',
   sortable: true
 }, {
-  key: 'createdAt',
-  label: 'Ngày tạo',
+  key: 'category.name',
+  label: 'Danh mục',
   sortable: true
 }, {
-  key: 'createdBy.name',
-  label: 'Người tạo'
+  key: 'brand.name',
+  label: 'Thương hiệu',
+  sortable: true
+}, {
+  key: 'sizes',
+  label: 'Kích cỡ',
+  sortable: true
+}, {
+  key: 'colors',
+  label: 'Màu sắc',
+  sortable: true
+}, {
+  key: 'materials',
+  label: 'Chất liệu',
+  sortable: true
 }, {
   key: 'status',
   label: 'Trạng thái'
 }, {
   key: 'action',
 }]
-const selected = ref<User[]>([])
 const selectedColumns = ref(defaultColumns)
 const columns = computed(() => defaultColumns.filter((column) => selectedColumns.value.includes(column)))
 const dataTableRequest = ref<DataTableRequest>(new DataTableRequest())
+const productFilter = ref<ProductFilterModel>(new ProductFilterModel())
 const totalRows = ref(0)
-const listCategory = ref<Category[]>([])
+const listProduct = ref<Product[]>([])
 const status = ref<Status[]>([])
 const statusList = ref<Status[]>([Status.ACTIVE, Status.IN_ACTIVE])
 const sort = ref({column: 'createdAt', direction: 'desc' as const})
-let state = reactive(new Category)
+let state = reactive(new Product)
 const isModalCreateOrUpdateOpen = ref(false)
 
-function onSelect(row: User) {
-  const index = selected.value.findIndex((item) => item.id === row.id)
-  if (index === -1) {
-    selected.value.push(row)
-  } else {
-    selected.value.splice(index, 1)
-  }
-}
+const listCategory = ref<Category[]>([])
+const listBrand = ref<Brand[]>([])
+const listSize = ref<Size[]>([])
+const listColor = ref<Color[]>([])
+const listMaterial = ref<Material[]>([])
+
+const listFilterSelectedCategory = ref<Category[]>([])
+const listFilterSelectedBrand = ref<Brand[]>([])
+const listFilterSelectedSize = ref<Size[]>([])
+const listFilterSelectedColor = ref<Color[]>([])
+const listFilterSelectedMaterial = ref<Material[]>([])
+
+const selectedCategory = ref<Category>()
+const selectedBrand = ref<Brand>()
+const listSelectedSize = ref<Size[]>([])
+const listSelectedColor = ref<Color[]>([])
+const listSelectedMaterial = ref<Material[]>([])
 
 const validate = (state: any): FormError[] => {
   const errors = []
@@ -76,14 +108,69 @@ const validate = (state: any): FormError[] => {
 
 onMounted(() => {
   reloadDataTable()
+  getListCategory()
+  getListBrand()
+  getListSize()
+  getListColor()
+  getListMaterial()
 })
 
+const getListCategory = async () => {
+  await getAllCategoryByStatus(Status.ACTIVE)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        listCategory.value = res.data.data
+      }
+    })
+}
+
+const getListBrand = async () => {
+  await getAllBrandByStatus(Status.ACTIVE)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        listBrand.value = res.data.data
+      }
+    })
+}
+
+const getListSize = async () => {
+  await getAllSizeByStatus(Status.ACTIVE)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        listSize.value = res.data.data
+      }
+    })
+}
+
+const getListColor = async () => {
+  await getAllColorByStatus(Status.ACTIVE)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        listColor.value = res.data.data
+      }
+    })
+}
+
+const getListMaterial = async () => {
+  await getAllMaterialByStatus(Status.ACTIVE)
+    .then((res: any) => {
+      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
+        listMaterial.value = res.data.data
+      }
+    })
+}
+
 const getAll = async () => {
-  await getAllCategory(dataTableRequest.value, status.value)
+  productFilter.value.categories = listFilterSelectedCategory.value.map((c: Category) => c.id) as string[]
+  productFilter.value.brands = listFilterSelectedBrand.value.map((b: Brand) => b.id) as string[]
+  productFilter.value.sizes = listFilterSelectedSize.value.map((s: Size) => s.id) as string[]
+  productFilter.value.colors = listFilterSelectedColor.value.map((c: Color) => c.id) as string[]
+  productFilter.value.materials = listFilterSelectedMaterial.value.map((m: Material) => m.id) as string[]
+  await getAllProduct(dataTableRequest.value, productFilter.value)
     .then((res: any) => {
       if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
         let indexDefault = (dataTableRequest.value.currentPage - 1) * 10 + 1
-        listCategory.value = res.data.items.map((e: any) => {
+        listProduct.value = res.data.items.map((e: any) => {
           return {...e, index: '#' + indexDefault++}
         })
         totalRows.value = res.data.totalRows
@@ -128,33 +215,42 @@ watch(() => dataTableRequest.value.currentPage, () => {
 
 const openModalCreateOrUpdate = () => {
   isModalCreateOrUpdateOpen.value = true
-  state = new Category()
-  state.status = Status.ACTIVE
+  state = new Product()
 }
 
 const createOrUpdate = () => {
-  createOrUpdateCategory(state)
-    .then((res: any) => {
-      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
-        isModalCreateOrUpdateOpen.value = false
-        if(state.id) {
-          getAll()
-        } else {
-          reloadDataTable()
-        }
-      }
-    })
+
 }
 
-const showCategoryDetail = (categoryId: string) => {
-  getCategoryById(categoryId)
-    .then((res: any) => {
-      if (res.data && res.data.code === ResponseCode.CODE_SUCCESS) {
-        state = res.data.data
-        isModalCreateOrUpdateOpen.value = true
-      }
-    })
+const genTextAttributeOnTable = (attribute: any) => {
+  let result = ''
+  attribute.forEach((a: any, index: number) => {
+    result = index === attribute.length - 1 ? result + a.name : result + a.name + ', '
+  })
+  return result
 }
+
+const genTextFilterOnSelect = (selected: any, listSelect: any) => {
+  if (selected.length === 0 || selected.length === listSelect.length) {
+    return 'Tất cả'
+  }
+  let result = ''
+  selected.forEach((s: any, index: number) => {
+    result = index === selected.length - 1 ? result + s.name : result + s.name + ', '
+  })
+  return result
+}
+
+const items = [
+  'https://lavenderstudio.com.vn/wp-content/uploads/2021/06/cach-chup-hinh-san-pham-quan-ao-dep-4.jpg',
+  'https://picsum.photos/1920/1080?random=2',
+  'https://picsum.photos/1920/1080?random=3',
+  'https://picsum.photos/1920/1080?random=4',
+  'https://picsum.photos/1920/1080?random=5',
+  'https://picsum.photos/1920/1080?random=6',
+  'https://picsum.photos/1920/1080?random=6',
+  'https://picsum.photos/1920/1080?random=6'
+]
 </script>
 
 <template>
@@ -182,6 +278,86 @@ const showCategoryDetail = (categoryId: string) => {
 
       <UDashboardToolbar>
         <template #left>
+          <USelectMenu
+            v-model="listFilterSelectedCategory"
+            placeholder="Danh mục"
+            multiple
+            :options="listCategory"
+            @change="reloadDataTable()"
+          >
+            <template #label>
+              Danh mục: {{ genTextFilterOnSelect(listFilterSelectedCategory, listCategory) }}
+            </template>
+
+            <template #option="{ option }">
+              <span>{{ option.name }}</span>
+            </template>
+          </USelectMenu>
+
+          <USelectMenu
+            v-model="listFilterSelectedBrand"
+            placeholder="Thương hiệu"
+            multiple
+            :options="listBrand"
+            @change="reloadDataTable()"
+          >
+            <template #label>
+              Thương hiệu: {{ genTextFilterOnSelect(listFilterSelectedBrand, listBrand) }}
+            </template>
+
+            <template #option="{ option }">
+              <span>{{ option.name }}</span>
+            </template>
+          </USelectMenu>
+
+          <USelectMenu
+            v-model="listFilterSelectedSize"
+            placeholder="Kích thước"
+            multiple
+            :options="listSize"
+            @change="reloadDataTable()"
+          >
+            <template #label>
+              Kích thước: {{ genTextFilterOnSelect(listFilterSelectedSize, listSize) }}
+            </template>
+
+            <template #option="{ option }">
+              <span>{{ option.name }}</span>
+            </template>
+          </USelectMenu>
+
+          <USelectMenu
+            v-model="listFilterSelectedColor"
+            placeholder="Màu sắc"
+            multiple
+            :options="listColor"
+            @change="reloadDataTable()"
+          >
+            <template #label>
+              Màu sắc: {{ genTextFilterOnSelect(listFilterSelectedColor, listColor) }}
+            </template>
+
+            <template #option="{ option }">
+              <span>{{ option.name }}</span>
+            </template>
+          </USelectMenu>
+
+          <USelectMenu
+            v-model="listFilterSelectedMaterial"
+            placeholder="Chất liệu"
+            multiple
+            :options="listMaterial"
+            @change="reloadDataTable()"
+          >
+            <template #label>
+              Chất liệu: {{ genTextFilterOnSelect(listFilterSelectedMaterial, listMaterial) }}
+            </template>
+
+            <template #option="{ option }">
+              <span>{{ option.name }}</span>
+            </template>
+          </USelectMenu>
+
           <USelectMenu
             v-model="status"
             placeholder="Trạng thái"
@@ -216,59 +392,57 @@ const showCategoryDetail = (categoryId: string) => {
 
       <UDashboardModal
         v-model="isModalCreateOrUpdateOpen"
-        title="Thêm mới Danh mục"
-        :ui="{ width: 'sm:max-w-md' }"
+        title="Sản phẩm"
+        :ui="{ width: 'sm:max-w-screen-lg' }"
         prevent-close
       >
-        <UForm
-          :validate="validate"
-          :validate-on="['submit']"
-          :state="state"
-          class="space-y-4"
-          @submit="createOrUpdate()"
-        >
-          <UFormGroup label="Tên Danh mục" name="name">
-            <UInput v-model="state.name" placeholder="Quần, Áo,..." autofocus/>
-          </UFormGroup>
-
-          <UFormGroup label="Mô tả" name="description">
-            <UInput v-model="state.description" placeholder="Quần, Áo,..."/>
-          </UFormGroup>
-
-          <UFormGroup label="Trạng thái" name="status">
-            <USelectMenu
-              v-model="state.status"
-              :options="statusList"
+        <div class="grid grid-cols-12">
+          <div class="col-span-3">
+            <UCarousel
+              v-slot="{ item }"
+              :items="items"
+              :ui="{ item: 'basis-full' }"
+              class="rounded-lg overflow-hidden"
+              arrows
+              :prev-button="{
+                color: 'transparent',
+                icon: 'i-heroicons-chevron-left',
+              }"
+              :next-button="{
+                color: 'transparent',
+                icon: 'i-heroicons-chevron-right',
+              }"
             >
-              <template #label>
-                {{ state.status === Status.ACTIVE ? 'Hoạt động' : 'Ngừng hoạt động' }}
-              </template>
-
-              <template #option="{ option }">
-                <span>{{ option === Status.ACTIVE ? 'Hoạt động' : 'Ngừng hoạt động' }}</span>
-              </template>
-            </USelectMenu>
-          </UFormGroup>
-
-          <div class="flex justify-end gap-3">
-            <UButton label="Hủy" color="gray" variant="ghost"/>
-            <UButton type="submit" :label="state.id ? 'Cập nhật' : 'Thêm mới'" color="primary"/>
+              <img :src="item" class="w-full" draggable="false">
+            </UCarousel>
           </div>
-        </UForm>
+          <div class="col-span-8"></div>
+        </div>
       </UDashboardModal>
 
       <UTable
         v-model:sort="sort"
-        :rows="listCategory"
+        :rows="listProduct"
         :columns="columns"
         sort-mode="manual"
         class="w-full"
         :ui="{ divide: 'divide-gray-200 dark:divide-gray-800' }"
         :empty-state="{ icon: 'i-heroicons-circle-stack-20-solid', label: 'Không có dữ liệu.' }"
-        @select="onSelect"
       >
         <template #createdAt-data="{ row }">
           <span>{{ moment(row.createdAt).format('DD/MM/YYYY HH:mm:ss') }}</span>
+        </template>
+
+        <template #sizes-data="{ row }">
+          <span>{{ genTextAttributeOnTable(row.sizes) }}</span>
+        </template>
+
+        <template #colors-data="{ row }">
+          <span>{{ genTextAttributeOnTable(row.colors) }}</span>
+        </template>
+
+        <template #materials-data="{ row }">
+          <span>{{ genTextAttributeOnTable(row.materials) }}</span>
         </template>
 
         <template #status-data="{ row }">
@@ -277,7 +451,7 @@ const showCategoryDetail = (categoryId: string) => {
         </template>
 
         <template #action-data="{ row }">
-          <UButton color="primary" variant="outline" @click="showCategoryDetail(row.id)">
+          <UButton color="primary" variant="outline">
             <UIcon name="i-heroicons-eye-16-solid"></UIcon>
           </UButton>
         </template>

@@ -18,6 +18,7 @@ public class BrandDto extends BaseDto {
     private String name;
     private String description;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
 
     public static BrandDto toDto(Brand brand) {
         return BrandDto.builder()
@@ -26,6 +27,7 @@ public class BrandDto extends BaseDto {
                 .description(brand.getDescription())
                 .createdAt(brand.getCreatedAt())
                 .createdBy(CreatedByDto.builder().id(brand.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(brand.getUpdatedBy()).build())
                 .status(brand.getStatus())
                 .updatedAt(brand.getUpdatedAt())
                 .build();

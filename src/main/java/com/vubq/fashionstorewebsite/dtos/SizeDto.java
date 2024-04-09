@@ -18,6 +18,7 @@ public class SizeDto extends BaseDto {
     private String name;
     private String description;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
 
     public static SizeDto toDto(Size size) {
         return SizeDto.builder()
@@ -26,6 +27,7 @@ public class SizeDto extends BaseDto {
                 .description(size.getDescription())
                 .createdAt(size.getCreatedAt())
                 .createdBy(CreatedByDto.builder().id(size.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(size.getUpdatedBy()).build())
                 .status(size.getStatus())
                 .updatedAt(size.getUpdatedAt())
                 .build();

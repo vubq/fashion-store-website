@@ -17,4 +17,6 @@ public interface BrandService {
     Optional<Brand> findById(String id);
 
     Brand save(Brand brand);
+
+    List<Brand> getAllByStatus(EStatus status);
 }

@@ -40,6 +40,13 @@ const defaultColumns = [{
   key: 'createdBy.name',
   label: 'Người tạo'
 }, {
+  key: 'updatedAt',
+  label: 'Ngày cập nhật',
+  sortable: true
+}, {
+  key: 'updatedBy.name',
+  label: 'Người cập nhật'
+}, {
   key: 'status',
   label: 'Trạng thái'
 }, {
@@ -216,7 +223,7 @@ const showCategoryDetail = (categoryId: string) => {
 
       <UDashboardModal
         v-model="isModalCreateOrUpdateOpen"
-        title="Thêm mới Danh mục"
+        :title="state.id ? 'Cập nhật Danh mục' : 'Thêm mới Danh mục'"
         :ui="{ width: 'sm:max-w-md' }"
         prevent-close
       >
@@ -269,6 +276,10 @@ const showCategoryDetail = (categoryId: string) => {
       >
         <template #createdAt-data="{ row }">
           <span>{{ moment(row.createdAt).format('DD/MM/YYYY HH:mm:ss') }}</span>
+        </template>
+
+        <template #updatedAt-data="{ row }">
+          <span>{{ row.updatedAt ? moment(row.updatedAt).format('DD/MM/YYYY HH:mm:ss') : '' }}</span>
         </template>
 
         <template #status-data="{ row }">

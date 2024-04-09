@@ -57,4 +57,15 @@ public class CategoryServiceImpl implements CategoryService {
     public Category save(Category category) {
         return this.categoryRepository.save(category);
     }
+
+    @Override
+    public List<Category> getAllByStatus(EStatus status) {
+        BaseSpecification<Category> specStatusIn = new BaseSpecification<>(
+                SearchCriteria.builder()
+                        .keys(new String[]{BaseEntity.Fields.status})
+                        .operation(SearchOperation.EQUALITY)
+                        .value(status)
+                        .build());
+        return this.categoryRepository.findAll(Specification.where(specStatusIn));
+    }
 }

@@ -18,6 +18,7 @@ public class MaterialDto extends BaseDto {
     private String name;
     private String description;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
 
     public static MaterialDto toDto(Material material) {
         return MaterialDto.builder()
@@ -26,6 +27,7 @@ public class MaterialDto extends BaseDto {
                 .description(material.getDescription())
                 .createdAt(material.getCreatedAt())
                 .createdBy(CreatedByDto.builder().id(material.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(material.getUpdatedBy()).build())
                 .status(material.getStatus())
                 .updatedAt(material.getUpdatedAt())
                 .build();

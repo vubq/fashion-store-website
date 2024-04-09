@@ -18,6 +18,7 @@ public class CategoryDto extends BaseDto {
     private String name;
     private String description;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
 
     public static CategoryDto toDto(Category category) {
         return CategoryDto.builder()
@@ -26,6 +27,7 @@ public class CategoryDto extends BaseDto {
                 .description(category.getDescription())
                 .createdAt(category.getCreatedAt())
                 .createdBy(CreatedByDto.builder().id(category.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(category.getUpdatedBy()).build())
                 .status(category.getStatus())
                 .updatedAt(category.getUpdatedAt())
                 .build();

@@ -18,6 +18,7 @@ public class ColorDto extends BaseDto {
     private String name;
     private String description;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
 
     public static ColorDto toDto(Color color) {
         return ColorDto.builder()
@@ -26,6 +27,7 @@ public class ColorDto extends BaseDto {
                 .description(color.getDescription())
                 .createdAt(color.getCreatedAt())
                 .createdBy(CreatedByDto.builder().id(color.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(color.getUpdatedBy()).build())
                 .status(color.getStatus())
                 .updatedAt(color.getUpdatedAt())
                 .build();

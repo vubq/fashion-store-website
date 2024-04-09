@@ -1,10 +1,10 @@
 import axios from '~/utils/axios'
 import {DataTableRequest} from '~/models/DataTableRequest'
-import {Status} from '~/models/enums/Status'
+import {ProductFilterModel} from '~/models/ProductFilterModel'
 
-export const getAllCategory = (params: DataTableRequest, data: Status[]) =>
+export const getAllProduct = (params: DataTableRequest, data: ProductFilterModel) =>
   axios({
-    url: '/category/get-all',
+    url: '/product/get-all',
     method: 'post',
     params,
     data

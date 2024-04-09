@@ -57,4 +57,15 @@ public class SizeServiceImpl implements SizeService {
     public Size save(Size size) {
         return this.sizeRepository.save(size);
     }
+
+    @Override
+    public List<Size> getAllByStatus(EStatus status) {
+        BaseSpecification<Size> specStatusIn = new BaseSpecification<>(
+                SearchCriteria.builder()
+                        .keys(new String[]{BaseEntity.Fields.status})
+                        .operation(SearchOperation.EQUALITY)
+                        .value(status)
+                        .build());
+        return this.sizeRepository.findAll(Specification.where(specStatusIn));
+    }
 }

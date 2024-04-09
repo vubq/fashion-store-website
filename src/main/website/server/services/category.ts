@@ -17,6 +17,12 @@ export const getCategoryById = (categoryId: String) =>
     method: 'get',
   })
 
+export const getAllCategoryByStatus = (status: Status) =>
+  axios({
+    url: '/category/get-all/' + status,
+    method: 'get'
+  })
+
 export const createOrUpdateCategory = (data: Category) =>
   axios({
     url: '/category',

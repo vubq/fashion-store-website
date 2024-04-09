@@ -17,4 +17,6 @@ public interface MaterialService {
     Optional<Material> findById(String id);
 
     Material save(Material material);
+
+    List<Material> getAllByStatus(EStatus status);
 }

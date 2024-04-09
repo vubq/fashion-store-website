@@ -23,9 +23,13 @@ public class ProductDto extends BaseDto {
     private CategoryDto category;
     private BrandDto brand;
     private CreatedByDto createdBy;
+    private UpdatedByDto updatedBy;
     private List<SizeDto> sizes;
     private List<ColorDto> colors;
     private List<MaterialDto> materials;
+    private List<ImageDto> images;
+
+    private List<ProductDetailDto> productDetails;
 
     public static ProductDto toDto(Product product) {
         return ProductDto.builder()
@@ -36,6 +40,7 @@ public class ProductDto extends BaseDto {
                 .category(CategoryDto.toDto(product.getCategory()))
                 .brand(BrandDto.toDto(product.getBrand()))
                 .createdBy(CreatedByDto.builder().id(product.getCreatedBy()).build())
+                .updatedBy(UpdatedByDto.builder().id(product.getUpdatedBy()).build())
                 .createdAt(product.getCreatedAt())
                 .updatedAt(product.getUpdatedAt())
                 .status(product.getStatus())
